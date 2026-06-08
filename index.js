@@ -7,12 +7,31 @@ const {
 } = require('discord.js');
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds]
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers
+    ]
 });
 
 const CHANNEL_ID = '1513407480586178742';
 
 const BANNER_URL = 'https://cdn.discordapp.com/attachments/1513161703393857616/1513409864028782592/7E3C8A6E-F15F-4BC2-990B-201960F3D557.png';
+
+const roles = {
+    bali: '1513404286967484536',
+    banten: '1513404364054593667',
+    jakarta: '1513404451367420014',
+    jawabarat: '1513404531466047531',
+    jawatengah: '1513404626450387014',
+    jawatimur: '1513404715084546098',
+    kalimantan: '1513404787981553675',
+    nusatenggara: '1513404862912659526',
+    papua: '1513404949281771690',
+    sulawesi: '1513405104085008404',
+    sumatra: '1513405199094382602',
+    yogyakarta: '1513405273677627513',
+    international: '1513405348286038127'
+};
 
 client.once('ready', async () => {
     console.log(`✅ ${client.user.tag} online!`);
@@ -51,84 +70,19 @@ Silahkan pilih roles sesuai dengan domisili asal kamu!
                     .setCustomId('domisili_menu')
                     .setPlaceholder('📍 Pilih domisili kamu...')
                     .addOptions([
-                        {
-                            label: 'Bali',
-                            description: 'Pilih jika kamu berasal dari Bali',
-                            emoji: '🌴',
-                            value: 'bali'
-                        },
-                        {
-                            label: 'Banten',
-                            description: 'Pilih jika kamu berasal dari Banten',
-                            emoji: '🌿',
-                            value: 'banten'
-                        },
-                        {
-                            label: 'Jakarta',
-                            description: 'Pilih jika kamu berasal dari Jakarta',
-                            emoji: '🏙️',
-                            value: 'jakarta'
-                        },
-                        {
-                            label: 'Jawa Barat',
-                            description: 'Pilih jika kamu berasal dari Jawa Barat',
-                            emoji: '🌄',
-                            value: 'jawabarat'
-                        },
-                        {
-                            label: 'Jawa Tengah',
-                            description: 'Pilih jika kamu berasal dari Jawa Tengah',
-                            emoji: '🏛️',
-                            value: 'jawatengah'
-                        },
-                        {
-                            label: 'Jawa Timur',
-                            description: 'Pilih jika kamu berasal dari Jawa Timur',
-                            emoji: '🌋',
-                            value: 'jawatimur'
-                        },
-                        {
-                            label: 'Kalimantan',
-                            description: 'Pilih jika kamu berasal dari Kalimantan',
-                            emoji: '🌳',
-                            value: 'kalimantan'
-                        },
-                        {
-                            label: 'Nusa Tenggara',
-                            description: 'Pilih jika kamu berasal dari Nusa Tenggara',
-                            emoji: '🏝️',
-                            value: 'nusatenggara'
-                        },
-                        {
-                            label: 'Papua',
-                            description: 'Pilih jika kamu berasal dari Papua',
-                            emoji: '🦜',
-                            value: 'papua'
-                        },
-                        {
-                            label: 'Sulawesi',
-                            description: 'Pilih jika kamu berasal dari Sulawesi',
-                            emoji: '🐟',
-                            value: 'sulawesi'
-                        },
-                        {
-                            label: 'Sumatra',
-                            description: 'Pilih jika kamu berasal dari Sumatra',
-                            emoji: '🌴',
-                            value: 'sumatra'
-                        },
-                        {
-                            label: 'Yogyakarta',
-                            description: 'Pilih jika kamu berasal dari Yogyakarta',
-                            emoji: '🎭',
-                            value: 'yogyakarta'
-                        },
-                        {
-                            label: 'International',
-                            description: 'Pilih jika kamu berasal dari luar Indonesia',
-                            emoji: '🌍',
-                            value: 'international'
-                        }
+                        { label: 'Bali', emoji: '🌴', value: 'bali' },
+                        { label: 'Banten', emoji: '🌿', value: 'banten' },
+                        { label: 'Jakarta', emoji: '🏙️', value: 'jakarta' },
+                        { label: 'Jawa Barat', emoji: '🌄', value: 'jawabarat' },
+                        { label: 'Jawa Tengah', emoji: '🏛️', value: 'jawatengah' },
+                        { label: 'Jawa Timur', emoji: '🌋', value: 'jawatimur' },
+                        { label: 'Kalimantan', emoji: '🌳', value: 'kalimantan' },
+                        { label: 'Nusa Tenggara', emoji: '🏝️', value: 'nusatenggara' },
+                        { label: 'Papua', emoji: '🦜', value: 'papua' },
+                        { label: 'Sulawesi', emoji: '🐟', value: 'sulawesi' },
+                        { label: 'Sumatra', emoji: '🌴', value: 'sumatra' },
+                        { label: 'Yogyakarta', emoji: '🎭', value: 'yogyakarta' },
+                        { label: 'International', emoji: '🌍', value: 'international' }
                     ])
             );
 
@@ -145,13 +99,31 @@ Silahkan pilih roles sesuai dengan domisili asal kamu!
 client.on('interactionCreate', async interaction => {
 
     if (!interaction.isStringSelectMenu()) return;
+    if (interaction.customId !== 'domisili_menu') return;
 
-    if (interaction.customId === 'domisili_menu') {
+    const allDomisiliRoles = Object.values(roles);
 
-        const pilihan = interaction.values[0];
+    try {
+
+        await interaction.member.roles.remove(allDomisiliRoles);
+
+        const selectedRole = roles[interaction.values[0]];
+
+        if (selectedRole) {
+            await interaction.member.roles.add(selectedRole);
+        }
 
         await interaction.reply({
-            content: `✅ Domisili yang dipilih: **${pilihan}**`,
+            content: `✅ Domisili berhasil diubah menjadi **${interaction.values[0]}**`,
+            ephemeral: true
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        await interaction.reply({
+            content: '❌ Gagal memberikan role. Pastikan role bot berada di atas semua role domisili dan memiliki izin Manage Roles.',
             ephemeral: true
         });
     }
