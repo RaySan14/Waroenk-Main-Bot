@@ -183,7 +183,15 @@ const gameRow = new ActionRowBuilder()
                 { label: 'Ready Or Not', emoji: '🚨', value: 'ron' }
             ])
     );
+await channel.send({
+    embeds: [gameEmbed],
+    components: [gameRow]
+});
 
+} catch (error) {
+    console.error(error);
+}
+});
 client.on('interactionCreate', async interaction => {
 
     if (!interaction.isStringSelectMenu()) return;
