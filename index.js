@@ -15,6 +15,12 @@ const client = new Client({
 
 const CHANNEL_ID = '1513407480586178742';
 
+const GENDER_BANNER = 'https://cdn.discordapp.com/attachments/1513161703393857616/1513418509378519050/5E6FC85F-C98D-4CCC-8BD7-3FD9A8DD0FF6.png';
+
+const genderRoles = {
+    boy: '1513361140866879618',
+    ladies: '1513149828819980359'
+};
 const BANNER_URL = 'https://cdn.discordapp.com/attachments/1513161703393857616/1513409864028782592/7E3C8A6E-F15F-4BC2-990B-201960F3D557.png';
 
 const roles = {
@@ -98,8 +104,43 @@ Silahkan pilih roles sesuai dengan domisili asal kamu!
 
 client.on('interactionCreate', async interaction => {
 
-    if (!interaction.isStringSelectMenu()) return;
-    if (interaction.customId !== 'domisili_menu') return;
+```
+if (!interaction.isStringSelectMenu()) return;
+
+// GENDER MENU
+if (interaction.customId === 'gender_menu') {
+
+    try {
+
+        await interaction.member.roles.remove([
+            '1513361140866879618', // BOY
+            '1513149828819980359'  // LADIES
+        ]);
+
+        const selectedGender = genderRoles[interaction.values[0]];
+
+        if (selectedGender) {
+            await interaction.member.roles.add(selectedGender);
+        }
+
+        return interaction.reply({
+            content: `✅ Gender berhasil diubah menjadi **${interaction.values[0].toUpperCase()}**`,
+            ephemeral: true
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        return interaction.reply({
+            content: '❌ Gagal memberikan role gender.',
+            ephemeral: true
+        });
+    }
+}
+
+// DOMISILI MENU
+if (interaction.customId === 'domisili_menu') {
 
     const allDomisiliRoles = Object.values(roles);
 
@@ -113,7 +154,7 @@ client.on('interactionCreate', async interaction => {
             await interaction.member.roles.add(selectedRole);
         }
 
-        await interaction.reply({
+        return interaction.reply({
             content: `✅ Domisili berhasil diubah menjadi **${interaction.values[0]}**`,
             ephemeral: true
         });
@@ -122,11 +163,14 @@ client.on('interactionCreate', async interaction => {
 
         console.error(error);
 
-        await interaction.reply({
+        return interaction.reply({
             content: '❌ Gagal memberikan role. Pastikan role bot berada di atas semua role domisili dan memiliki izin Manage Roles.',
             ephemeral: true
         });
     }
+}
+```
+
 });
 
 client.login(process.env.TOKEN);
