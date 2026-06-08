@@ -260,7 +260,6 @@ client.on('interactionCreate', async interaction => {
             });
         }
     }
-});
 
 // GAME MENU
 if (interaction.customId === 'game_menu') {
