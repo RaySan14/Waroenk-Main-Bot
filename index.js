@@ -3,7 +3,9 @@ const {
     GatewayIntentBits,
     EmbedBuilder,
     ActionRowBuilder,
-    StringSelectMenuBuilder
+    StringSelectMenuBuilder,
+    ButtonBuilder,
+    ButtonStyle
 } = require('discord.js');
 
 const client = new Client({
@@ -14,6 +16,7 @@ const client = new Client({
 });
 
 const CHANNEL_ID = '1513407480586178742';
+const START_HERE_CHANNEL_ID = '1513478095728934932';
 
 const GENDER_BANNER = 'https://cdn.discordapp.com/attachments/1513161703393857616/1513418509378519050/5E6FC85F-C98D-4CCC-8BD7-3FD9A8DD0FF6.png';
 
@@ -57,6 +60,7 @@ client.once('ready', async () => {
 
     try {
         const channel = await client.channels.fetch(CHANNEL_ID);
+        const startHereChannel = await client.channels.fetch(START_HERE_CHANNEL_ID);
 
         const embed = new EmbedBuilder()
             .setColor('#F1C40F')
@@ -188,13 +192,94 @@ await channel.send({
     components: [gameRow]
 });
 
+const startEmbed = new EmbedBuilder()
+.setColor('#F39C12')
+.setTitle('🌟 Get Started!')
+.setDescription(`
+Selamat datang di **Waroenk Main Server!**
+
+Channel ini bertujuan untuk membantu member memahami lebih lanjut mengenai Waroenk Main dan menjawab pertanyaan yang sering diajukan.
+
+## 🚀 Let's Get Started!
+
+📜 Jika kamu belum membaca Rules kami, silahkan kunjungi <#1513142504516747506>
+
+👑 Silahkan pilih Domisili, Gender, dan Game Role di <#1513407480586178742>
+
+Jika kamu ingin mengetahui fungsi setiap role yang ada di server, silahkan gunakan tombol di bawah ini.
+
+Selamat bergabung dan selamat bermain di Waroenk Main! 🎮
+`);
+
+const infoRow = new ActionRowBuilder()
+.addComponents(
+    new ButtonBuilder()
+        .setCustomId('roles_info')
+        .setLabel('Roles Info')
+        .setEmoji('👑')
+        .setStyle(ButtonStyle.Success)
+);
+
+await startHereChannel.send({
+    embeds: [startEmbed],
+    components: [infoRow]
+});
+        
 } catch (error) {
     console.error(error);
 }
 });
 client.on('interactionCreate', async interaction => {
 
-    if (!interaction.isStringSelectMenu()) return;
+    if (interaction.isButton()) {
+
+    if (interaction.customId === 'roles_info') {
+
+        return interaction.reply({
+            content: `
+# 👑 ROLE INFORMATION
+
+## 🛡️ STAFF ROLES
+
+👑 <@&1513437549731778601>
+Founder & Owner Waroenk Main
+
+⚙️ <@&1513437866800316549>
+Discord & Operational Manager
+
+📋 <@&1513438067732516954>
+Administrative Team
+
+🛡️ <@&1513438166403780708>
+Moderator Team
+
+🎮 <@&1513472009349238855>
+Member Waroenk Main
+
+## 🏆 HONORABLE ROLES
+
+🎥 <@&1513498898340122684>
+Content Creator
+
+💎 <@&1513499421923475497>
+Donatur Waroenk Main
+
+## 🎯 CLAIMABLE ROLES
+
+👦 <@&1513361140866879618>
+
+👩 <@&1513149828819980359>
+
+Gunakan channel Select Roles untuk mengambil role.
+`,
+            ephemeral: true
+        });
+    }
+
+    return;
+}
+
+if (!interaction.isStringSelectMenu()) return;
 
     // GENDER MENU
     if (interaction.customId === 'gender_menu') {
