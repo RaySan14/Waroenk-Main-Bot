@@ -288,8 +288,9 @@ if (interaction.customId === 'game_menu') {
         return interaction.reply({
             content: '❌ Gagal memberikan role game.',
             ephemeral: true
-        });
-    }
 }
+}
+
+});
 
 client.login(process.env.TOKEN);
