@@ -21,6 +21,19 @@ const genderRoles = {
     boy: '1513361140866879618',
     ladies: '1513149828819980359'
 };
+
+const gameRoles = {
+    gtav: '1513358155118018560',
+    samp: '1513358190769864825',
+    roblox: '1513417247790731385',
+    minecraft: '1513358107324055752',
+    pubg: '1513358232498868354',
+    pubgm: '1513417212738932856',
+    ron: '1513358284760027307'
+};
+
+const GAME_BANNER = 'https://cdn.discordapp.com/attachments/1513161703393857616/1513426086950731867/BCC206BD-48B8-4F45-875D-D003BC9F3D02.png';
+
 const BANNER_URL = 'https://cdn.discordapp.com/attachments/1513161703393857616/1513409864028782592/7E3C8A6E-F15F-4BC2-990B-201960F3D557.png';
 
 const roles = {
@@ -134,6 +147,48 @@ await channel.send({
     components: [genderRow]
 });
 
+const gameEmbed = new EmbedBuilder()
+    .setColor('#2ECC71')
+    .setTitle('🎮 Game Catalog')
+    .setDescription(`
+Silahkan pilih game yang kamu mainkan!
+
+🚗 | GTA V
+🚔 | GTA SA:MP
+🟦 | Roblox
+⛏️ | Minecraft
+🔫 | PUBG
+📱 | PUBG Mobile
+🚨 | Ready Or Not
+`)
+    .setImage(GAME_BANNER)
+    .setFooter({
+        text: 'Click menu ini untuk memilih roles!'
+    });
+
+const gameRow = new ActionRowBuilder()
+    .addComponents(
+        new StringSelectMenuBuilder()
+            .setCustomId('game_menu')
+            .setPlaceholder('🎮 Pilih game yang kamu mainkan...')
+            .setMinValues(1)
+            .setMaxValues(7)
+            .addOptions([
+                { label: 'GTA V', emoji: '🚗', value: 'gtav' },
+                { label: 'GTA SA:MP', emoji: '🚔', value: 'samp' },
+                { label: 'Roblox', emoji: '🟦', value: 'roblox' },
+                { label: 'Minecraft', emoji: '⛏️', value: 'minecraft' },
+                { label: 'PUBG', emoji: '🔫', value: 'pubg' },
+                { label: 'PUBG Mobile', emoji: '📱', value: 'pubgm' },
+                { label: 'Ready Or Not', emoji: '🚨', value: 'ron' }
+            ])
+    );
+
+await channel.send({
+    embeds: [gameEmbed],
+    components: [gameRow]
+});
+        
 } catch (error) {
     console.error(error);
 }
@@ -206,5 +261,36 @@ client.on('interactionCreate', async interaction => {
         }
     }
 });
+
+// GAME MENU
+if (interaction.customId === 'game_menu') {
+
+    try {
+
+        await interaction.member.roles.remove(
+            Object.values(gameRoles)
+        );
+
+        const selectedRoles = interaction.values.map(
+            value => gameRoles[value]
+        );
+
+        await interaction.member.roles.add(selectedRoles);
+
+        return interaction.reply({
+            content: '✅ Game roles berhasil diperbarui!',
+            ephemeral: true
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        return interaction.reply({
+            content: '❌ Gagal memberikan role game.',
+            ephemeral: true
+        });
+    }
+}
 
 client.login(process.env.TOKEN);
