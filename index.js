@@ -97,80 +97,77 @@ Silahkan pilih roles sesuai dengan domisili asal kamu!
             components: [row]
         });
 
-    } catch (error) {
-        console.error(error);
-    }
+} catch (error) {
+    console.error(error);
+}
 });
 
 client.on('interactionCreate', async interaction => {
 
-```
-if (!interaction.isStringSelectMenu()) return;
+    if (!interaction.isStringSelectMenu()) return;
 
-// GENDER MENU
-if (interaction.customId === 'gender_menu') {
+    // GENDER MENU
+    if (interaction.customId === 'gender_menu') {
 
-    try {
+        try {
 
-        await interaction.member.roles.remove([
-            '1513361140866879618', // BOY
-            '1513149828819980359'  // LADIES
-        ]);
+            await interaction.member.roles.remove([
+                '1513361140866879618',
+                '1513149828819980359'
+            ]);
 
-        const selectedGender = genderRoles[interaction.values[0]];
+            const selectedGender = genderRoles[interaction.values[0]];
 
-        if (selectedGender) {
-            await interaction.member.roles.add(selectedGender);
+            if (selectedGender) {
+                await interaction.member.roles.add(selectedGender);
+            }
+
+            return interaction.reply({
+                content: `✅ Gender berhasil diubah menjadi **${interaction.values[0].toUpperCase()}**`,
+                ephemeral: true
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            return interaction.reply({
+                content: '❌ Gagal memberikan role gender.',
+                ephemeral: true
+            });
         }
-
-        return interaction.reply({
-            content: `✅ Gender berhasil diubah menjadi **${interaction.values[0].toUpperCase()}**`,
-            ephemeral: true
-        });
-
-    } catch (error) {
-
-        console.error(error);
-
-        return interaction.reply({
-            content: '❌ Gagal memberikan role gender.',
-            ephemeral: true
-        });
     }
-}
 
-// DOMISILI MENU
-if (interaction.customId === 'domisili_menu') {
+    // DOMISILI MENU
+    if (interaction.customId === 'domisili_menu') {
 
-    const allDomisiliRoles = Object.values(roles);
+        const allDomisiliRoles = Object.values(roles);
 
-    try {
+        try {
 
-        await interaction.member.roles.remove(allDomisiliRoles);
+            await interaction.member.roles.remove(allDomisiliRoles);
 
-        const selectedRole = roles[interaction.values[0]];
+            const selectedRole = roles[interaction.values[0]];
 
-        if (selectedRole) {
-            await interaction.member.roles.add(selectedRole);
+            if (selectedRole) {
+                await interaction.member.roles.add(selectedRole);
+            }
+
+            return interaction.reply({
+                content: `✅ Domisili berhasil diubah menjadi **${interaction.values[0]}**`,
+                ephemeral: true
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            return interaction.reply({
+                content: '❌ Gagal memberikan role. Pastikan role bot berada di atas semua role domisili dan memiliki izin Manage Roles.',
+                ephemeral: true
+            });
         }
-
-        return interaction.reply({
-            content: `✅ Domisili berhasil diubah menjadi **${interaction.values[0]}**`,
-            ephemeral: true
-        });
-
-    } catch (error) {
-
-        console.error(error);
-
-        return interaction.reply({
-            content: '❌ Gagal memberikan role. Pastikan role bot berada di atas semua role domisili dan memiliki izin Manage Roles.',
-            ephemeral: true
-        });
     }
-}
-```
-
 });
 
 client.login(process.env.TOKEN);
