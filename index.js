@@ -285,10 +285,11 @@ if (interaction.customId === 'game_menu') {
 
         console.error(error);
 
-        return interaction.reply({
-            content: '❌ Gagal memberikan role game.',
-            ephemeral: true
-}
+return interaction.reply({
+    content: '❌ Gagal memberikan role game.',
+    ephemeral: true
+});
+    }
 }
 
 });
