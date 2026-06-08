@@ -96,6 +96,43 @@ Silahkan pilih roles sesuai dengan domisili asal kamu!
             embeds: [embed],
             components: [row]
         });
+            const genderEmbed = new EmbedBuilder()
+    .setColor('#9B59B6')
+    .setTitle('🚻 Gender Catalog')
+    .setDescription(`
+Silahkan pilih roles sesuai dengan gender kamu.
+
+👦 | Boy
+👩 | Ladies
+`)
+    .setImage(GENDER_BANNER)
+    .setFooter({
+        text: 'Click menu ini untuk memilih roles!'
+    });
+
+const genderRow = new ActionRowBuilder()
+    .addComponents(
+        new StringSelectMenuBuilder()
+            .setCustomId('gender_menu')
+            .setPlaceholder('🚻 Pilih gender kamu...')
+            .addOptions([
+                {
+                    label: 'Boy',
+                    emoji: '👦',
+                    value: 'boy'
+                },
+                {
+                    label: 'Ladies',
+                    emoji: '👩',
+                    value: 'ladies'
+                }
+            ])
+    );
+
+await channel.send({
+    embeds: [genderEmbed],
+    components: [genderRow]
+});
 
 } catch (error) {
     console.error(error);
