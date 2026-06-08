@@ -11,7 +11,7 @@ const client = new Client({
 client.once('ready', async () => {
   console.log(`✅ ${client.user.tag} online!`);
 
-  const channel = await client.channels.fetch('ISI_CHANNEL_ID_DISINI');
+  const channel = await client.channels.fetch('1513407480586178742');
 
   const embed = new EmbedBuilder()
     .setColor('#5865F2')
