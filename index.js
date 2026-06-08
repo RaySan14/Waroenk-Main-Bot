@@ -188,6 +188,95 @@ await channel.send({
     embeds: [gameEmbed],
     components: [gameRow]
 });
+
+const rulesChannel = await client.channels.fetch('1513142504516747506');
+
+const rulesEmbed = new EmbedBuilder()
+    .setColor('#E74C3C')
+    .setTitle('📜 Waroenk Main Rules')
+    .setImage('https://media.discordapp.net/attachments/1513161703393857616/1513486236835254343/ChatGPT_Image_8_Jun_2026_17.13.39.png')
+    .setDescription(`
+**A. Respect Satu Sama Lain**
+
+Tidak ada toleransi untuk tindakan pelecehan, diskriminasi, intimidasi, rasisme, mockery, doxxing, dan ujaran kebencian dalam bentuk apa pun.
+
+━━━━━━━━━━━━━━
+
+**B. Tata Krama**
+
+• Dilarang bypass auto moderation.
+• Dilarang menggunakan kata tidak senonoh.
+• Dilarang diskriminasi terhadap member lain.
+• Dilarang ujaran kebencian.
+• Dilarang membahas topik sensitif seperti agama, politik, komunisme, terorisme, dan peperangan.
+• Dilarang memulai drama.
+• Dilarang earrape.
+• Dilarang mempromosikan perjudian.
+
+━━━━━━━━━━━━━━
+
+**C. Circle**
+
+Dilarang membentuk kelompok untuk raid, spam, ujaran kebencian, atau tindakan yang merugikan komunitas.
+
+━━━━━━━━━━━━━━
+
+**D. Access**
+
+• Dilarang menyalahgunakan akses atau fasilitas server.
+• Dilarang menyalahgunakan bot maupun celah sistem.
+
+━━━━━━━━━━━━━━
+
+**E. Informasi**
+
+• Dilarang menyebarkan informasi palsu.
+• Dilarang melakukan penipuan atau phishing.
+
+━━━━━━━━━━━━━━
+
+**F. Identitas**
+
+• Dilarang meniru identitas member, bot, maupun staff.
+• Dilarang menggunakan nama, foto, atau bio yang tidak pantas.
+• Dilarang menyebarkan data pribadi orang lain.
+
+━━━━━━━━━━━━━━
+
+**G. Spamming**
+
+• Dilarang spam text, emoji, sticker, reaction, gambar, video, maupun mention.
+
+━━━━━━━━━━━━━━
+
+**H. Promotion**
+
+• Dilarang promosi server, grup, sosial media, maupun produk tanpa izin staff.
+
+━━━━━━━━━━━━━━
+
+**I. Self Botting**
+
+Dilarang menggunakan self-bot dalam bentuk apa pun.
+
+━━━━━━━━━━━━━━
+
+**J. NSFW**
+
+• Dilarang menyebarkan konten NSFW.
+• Dilarang menseksualisasi karakter atau orang di bawah umur.
+
+━━━━━━━━━━━━━━
+
+⚖️ Dengan bergabung di Waroenk Main, kamu dianggap telah membaca dan menyetujui seluruh peraturan yang berlaku.
+`)
+    .setFooter({
+        text: 'Waroenk Main Community Rules'
+    });
+
+await rulesChannel.send({
+    embeds: [rulesEmbed]
+});
         
 } catch (error) {
     console.error(error);
